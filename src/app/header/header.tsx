@@ -15,7 +15,8 @@ const Header: React.FC = () => {
     { label: 'Itinerary', path: '/itinerary' },
     { label: 'Registry', path: '/registry' },
     { label: 'Set List', path: '/setlist' },
-    { label: 'RSVP', path: '/rsvp' }
+    { label: 'Menu', path: '/menu' },
+    { label: 'Travel advice', path: '/travel' }
   ];
 
   const handleDrawerToggle = () => {
@@ -45,8 +46,8 @@ const Header: React.FC = () => {
             </Typography>
             ) : (      
             <Typography 
-                variant="h1" 
-                component="h1" 
+                variant="h2" 
+                component="h2" 
                 align="center" 
                 sx={{ 
                     mb: 4,
@@ -118,7 +119,7 @@ const Header: React.FC = () => {
               </Drawer>
             </>
           ) : (
-            <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center' }}>
+            <Box sx={{ display: 'flex', gap: 8, justifyContent: 'center' }}>
               {menuItems.map((item) => (
                 <HeaderButton 
                   key={item.label}

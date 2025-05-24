@@ -34,7 +34,7 @@ const ItineraryPage = () => {
   }, []);
 
   return (
-    <Container maxWidth="md" sx={{ mt: 12, verticalAlign: 'middle' }}>
+    <Container maxWidth="lg" sx={{ mt: 5, px: { xs: 2, sm: 4, md: 8 } }}>
       <Timeline position="left">
         {timelineItems.map((item, index) => (
           <Fade in={visibleItems.includes(index)} timeout={800} key={index}>
@@ -43,16 +43,16 @@ const ItineraryPage = () => {
                 <Typography variant='h6'>
                 {index % 2 === 1 ? item.time : item.content}
                 </Typography>
-                </TimelineOppositeContent>
+              </TimelineOppositeContent>
               <TimelineSeparator>
                 <TimelineDot color="secondary" />
                 {index < timelineItems.length - 1 && <TimelineConnector />}
               </TimelineSeparator>
               <TimelineContent>
-              <Typography variant='h6' sx={{ mb: 10 }}>
+                <Typography variant='h6' sx={{ mb: 5 }}>
                 {index % 2 === 0 ? item.time : item.content}
                 </Typography>
-                </TimelineContent>
+              </TimelineContent>
             </TimelineItem>
           </Fade>
         ))}
@@ -61,4 +61,4 @@ const ItineraryPage = () => {
   );
 };
 
-export default ItineraryPage;
+export default ItineraryPage; 
