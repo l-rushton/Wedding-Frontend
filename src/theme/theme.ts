@@ -6,13 +6,29 @@ const theme = createTheme({
       main: '#F8F7F2',
     },
     secondary: {
-      main: '#AACBB1',
+      main: '#3D493C',
     },
   },
   typography: {
-    fontFamily: [
-        'playfairDisplay',
-    ].join(','),
+    fontFamily: 'var(--font-playfair)',
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        'html, body': {
+          backgroundColor: '#F8F7F2',
+          margin: 0,
+          padding: 0,
+        },
+      },
+    },
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          fontFeatureSettings: '"liga" 1, "dlig" 1, "hist" 1',
+        },
+      },
+    },
   },
 });
 

@@ -1,11 +1,206 @@
 'use client';
 
 import React from 'react';
-import { Container, Typography, Box, useTheme, Fade } from '@mui/material';
-import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineDot, TimelineContent, TimelineOppositeContent } from '@mui/lab';
+import { Container, Typography, Box, useTheme, List, ListItem } from '@mui/material';
+import PageFade from '../components/PageFade';
 
 const MenuPage = () => {
     const theme = useTheme();
+    return (
+        <PageFade>
+            <Box sx={{ py: 4 }}>
+                <Typography variant="h2" component="h1" gutterBottom align="center" 
+                    sx={{ 
+                        mb: 2,
+                        fontFamily: 'var(--font-cinzel)',
+                        color: theme.palette.secondary.main 
+                    }}>
+                    Food
+                </Typography>
+
+                <Typography variant="body1" component="h5" gutterBottom align="center" 
+                    sx={{ 
+                        mb: 2,
+                        fontFamily: 'var(--font-cinzel)',
+                        color: theme.palette.secondary.main,
+                        fontStyle: 'italic'
+                    }}>
+                    Please make your choices by scanning the QR code in your invitation
+                </Typography>
+
+                <Box sx={{ mb: 2 }}>
+                    <Typography variant="h4" component="h2" gutterBottom align="center"
+                        sx={{ 
+                            mb: 2,
+                            fontFamily: 'var(--font-cinzel)',
+                            color: theme.palette.secondary.main 
+                        }}>
+                        Canapés
+                    </Typography>
+
+                    <List sx={{
+                        width: '100%',
+                        maxWidth: 600,
+                        mx: 'auto',
+                        '& .MuiListItem-root': {
+                            textAlign: 'center',
+                            py: 1
+                        }
+                    }}>
+                        <ListItem>
+                            <Typography variant="body1" sx={{ width: '100%' }}>
+                                Tempura corn with plum dip (v)
+                            </Typography>
+                        </ListItem>
+                        <ListItem>
+                            <Typography variant="body1" sx={{ width: '100%' }}>
+                                Coconut prawns
+                            </Typography>
+                        </ListItem>
+                        <ListItem>
+                            <Typography variant="body1" sx={{ width: '100%' }}>
+                                Sticky Thai meatballs
+                            </Typography>
+                        </ListItem>
+                        <ListItem>
+                            <Typography variant="body1" sx={{ width: '100%' }}>
+                                Crispy vegetable spring rolls (ve)
+                            </Typography>
+                        </ListItem>
+                    </List>
+                </Box>
+
+                <Box sx={{ mb: 0 }}>
+                    <Typography variant="h4" component="h2" gutterBottom align="center"
+                        sx={{ 
+                            mb: 4,
+                            fontFamily: 'var(--font-cinzel)',
+                            color: theme.palette.secondary.main 
+                        }}>
+                        Wedding Breakfast
+                    </Typography>
+
+                    <Box sx={{ mb: 0 }}>
+                    <Typography variant="h5" component="h5" gutterBottom align="center"
+                        sx={{ 
+                            mb: 1,
+                            fontFamily: 'var(--font-cinzel)',
+                            color: theme.palette.secondary.main 
+                        }}>
+                        Appetisers
+                    </Typography>
+
+                    <List sx={{
+                        width: '100%',
+                        maxWidth: 600,
+                        mx: 'auto',
+                        '& .MuiListItem-root': {
+                            textAlign: 'center',
+                            py: 1
+                        }
+                    }}>
+                        <ListItem>
+                            <Typography variant="body1" sx={{ width: '100%' }}>
+                                Salt & pepper wild mushrooms with garlic, fresh lime leaf & sweet chilli sauce
+                            </Typography>
+                        </ListItem>
+                        <ListItem>
+                            <Typography variant="body1" sx={{ width: '100%' }}>
+                                Thai cod fishcakes with fragrant herb salad & lemongrass dressing
+                            </Typography>
+                        </ListItem>
+                    </List>
+                    </Box>
+
+                    <Typography variant="h5" component="h5" gutterBottom align="center"
+                        sx={{ 
+                            mb: 2,
+                            fontFamily: 'var(--font-cinzel)',
+                            color: theme.palette.secondary.main 
+                        }}>
+                        ~
+                    </Typography>
+
+                    <Box sx={{ mb: 0 }}>
+                    <Typography variant="h5" component="h5" gutterBottom align="center"
+                        sx={{ 
+                            mb: 1,
+                            fontFamily: 'var(--font-cinzel)',
+                            color: theme.palette.secondary.main 
+                        }}>
+                        Main course
+                    </Typography>
+
+
+                    <List sx={{
+                        width: '100%',
+                        maxWidth: 600,
+                        mx: 'auto',
+                        '& .MuiListItem-root': {
+                            textAlign: 'center',
+                            py: 1
+                        }
+                    }}>
+                        <ListItem>
+                            <Typography variant="body1" sx={{ width: '100%' }}>
+                                Thai green curry with tender chicken
+                            </Typography>
+                        </ListItem>
+                        <ListItem>
+                            <Typography variant="body1" sx={{ width: '100%' }}>
+                                Massaman curry with sweet potato & aromatic spices (ve) (n)
+                            </Typography>
+                        </ListItem>
+                        <ListItem>
+                            <Typography variant="body1" sx={{ width: '100%', fontStyle: 'italic' }}>
+                                Accompanied by coconut rice & crispy rice noodles
+                            </Typography>
+                        </ListItem>
+                    </List>
+                    </Box>
+                    <Typography variant="h5" component="h5" gutterBottom align="center"
+                        sx={{ 
+                            mb: 2,
+                            fontFamily: 'var(--font-cinzel)',
+                            color: theme.palette.secondary.main 
+                        }}>
+                        ~
+                    </Typography>
+                    <Box sx={{ mb: 0 }}>
+                    <Typography variant="h5" component="h5" gutterBottom align="center"
+                        sx={{ 
+                            mb: 1,
+                            fontFamily: 'var(--font-cinzel)',
+                            color: theme.palette.secondary.main 
+                        }}>
+                        Desserts
+                    </Typography>
+
+                    <List sx={{
+                        width: '100%',
+                        maxWidth: 600,
+                        mx: 'auto',
+                        '& .MuiListItem-root': {
+                            textAlign: 'center',
+                            py: 1
+                        }
+                    }}>
+                        <ListItem>
+                            <Typography variant="body1" sx={{ width: '100%' }}>
+                                Lemon tart with lemon meringue ice cream
+                            </Typography>
+                        </ListItem>
+                        <ListItem>
+                            <Typography variant="body1" sx={{ width: '100%' }}>
+                                Dark chocolate & avocado mousse (ve)
+                            </Typography>
+                        </ListItem>
+                    </List>
+                    </Box>
+                </Box>
+            </Box>
+        </PageFade>
+    );
 }
 
 export default MenuPage;

@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppBar, Toolbar, Typography, Box, IconButton, Drawer, List, ListItem, ListItemText, useTheme, useMediaQuery, Container } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import HeaderButton from './headerButton';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 
 const Header: React.FC = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const menuItems = [
     { label: 'Home', path: '/' },
@@ -19,6 +25,12 @@ const Header: React.FC = () => {
     { label: 'Travel advice', path: '/travel' }
   ];
 
+  const getCurrentPageName = () => {
+    if (pathname === '/') return 'Home';
+    const currentItem = menuItems.find(item => item.path === pathname);
+    return currentItem ? currentItem.label : '';
+  };
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -28,39 +40,41 @@ const Header: React.FC = () => {
     setMobileOpen(false);
   };
 
+  // Don't render anything until after mounting to prevent hydration mismatch
+  if (!mounted) {
+    return (
+      <Typography 
+        variant="h3" 
+        component="h3" 
+        align="center" 
+        sx={{ 
+          mb: 4,
+          pt: 4,
+          fontWeight: 'light',
+          color: 'secondary.main'
+        }}
+      >
+        Izzy & Louis
+      </Typography>
+    );
+  }
+
   return (
     <>
-        {isMobile ? (      
-            <Typography 
-                variant="h3" 
-                component="h3" 
-                align="center" 
-                sx={{ 
-                    mb: 4,
-                    pt: 4,
-                    fontWeight: 'light',
-                    color: 'black'
-                }}
-            >
-                Izzy & Louis
-            </Typography>
-            ) : (      
-            <Typography 
-                variant="h2" 
-                component="h2" 
-                align="center" 
-                sx={{ 
-                    mb: 4,
-                    pt: 4,
-                    fontWeight: 'light',
-                    color: 'black'
-                }}
-            >
-                Izzy & Louis
-            </Typography>)
-    }
+        <Typography 
+            variant={isMobile ? "h3" : "h2"} 
+            component={isMobile ? "h3" : "h2"} 
+            align="center" 
+            sx={{ 
+                mb: 4,
+                pt: 4,
+                fontWeight: 'light',
+                color: 'secondary.main'
+            }}
+        >
+            Izzy & Louis
+        </Typography>
 
-      
       <AppBar 
         position="sticky" 
         elevation={0}
@@ -76,7 +90,7 @@ const Header: React.FC = () => {
             <>
             <Typography
             variant='h5'>
-                Menu
+                {getCurrentPageName()}
             </Typography>
               <IconButton
                 color="inherit"

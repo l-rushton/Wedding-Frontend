@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Container, Typography, Box, useTheme, Fade } from '@mui/material';
+import { Container, Typography, Box, useTheme, Link, Fade } from '@mui/material';
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineDot, TimelineContent, TimelineOppositeContent } from '@mui/lab';
+import SongSuggestionOverlay from '../components/SongSuggestionOverlay';
 
 const ItineraryPage = () => {
   const theme = useTheme();
@@ -34,14 +35,17 @@ const ItineraryPage = () => {
   }, []);
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 5, px: { xs: 2, sm: 4, md: 8 } }}>
-      <Timeline position="left">
+    <Container maxWidth="lg" sx={{ mt: 5, px: { xs: 2, sm: 4, md: 8 }, position: 'relative' }}>
+        <Typography variant='h4' sx={{ mb: 4, textAlign: 'center' }}>
+            Timeline
+        </Typography>
+      <Timeline position="right">
         {timelineItems.map((item, index) => (
-          <Fade in={visibleItems.includes(index)} timeout={800} key={index}>
+          <Fade in={visibleItems.includes(index)} timeout={800} key={`timeline-item-${index}`}>
             <TimelineItem>
               <TimelineOppositeContent>
-                <Typography variant='h6'>
-                {index % 2 === 1 ? item.time : item.content}
+                <Typography variant='h6' sx={{ mt: '-4px' }}>
+                  {item.time}
                 </Typography>
               </TimelineOppositeContent>
               <TimelineSeparator>
@@ -49,9 +53,36 @@ const ItineraryPage = () => {
                 {index < timelineItems.length - 1 && <TimelineConnector />}
               </TimelineSeparator>
               <TimelineContent>
-                <Typography variant='h6' sx={{ mb: 5 }}>
-                {index % 2 === 0 ? item.time : item.content}
+                <Typography variant='h6' sx={{ mt: '-4px', mb: item.content === "First Dance" ? 1 : 5 }}>
+                  {item.content}
                 </Typography>
+                {item.content === "First Dance" && (
+                  <Typography 
+                    variant="body2" 
+                    sx={{ 
+                      mb: 5,
+                      color: 'secondary.main',
+                      fontSize: { xs: '0.875rem', md: '1rem' }
+                    }}
+                  >
+                    Got a song suggestion?{' '}
+                    <Link
+                      href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      sx={{
+                        color: 'secondary.main',
+                        textDecoration: 'underline',
+                        '&:hover': {
+                          textDecoration: 'underline'
+                        }
+                      }}
+                    >
+                      Click here
+                    </Link>
+                    {' '}to submit!
+                  </Typography>
+                )}
               </TimelineContent>
             </TimelineItem>
           </Fade>

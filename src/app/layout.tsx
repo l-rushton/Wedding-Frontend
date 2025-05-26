@@ -6,9 +6,16 @@ import CssBaseline from '@mui/material/CssBaseline';
 import theme from '../theme/theme';
 import Header from './header/header';
 import { Box } from '@mui/material';
-import ForestFloorArt from './components/ForestFloorArt';
 
-const playfairDisplay = Playfair_Display({ subsets: ['latin'] });
+const playfairDisplay = Playfair_Display({ 
+  subsets: ['latin'],
+  display: 'swap',
+  fallback: ['serif'],
+  preload: true,
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-playfair',
+});
 
 export default function RootLayout({
   children,

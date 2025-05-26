@@ -10,7 +10,7 @@ const Countdown = () => {
   });
 
   useEffect(() => {
-    const weddingDate = new Date('2025-10-18T12:30:00');
+    const weddingDate = new Date('2025-10-18T12:00:00');
 
     const calculateTimeLeft = () => {
       const now = new Date();
@@ -32,29 +32,39 @@ const Countdown = () => {
     return () => clearInterval(timer);
   }, []);
 
+  const timeUnit = (value: number, label: string) => (
+    <Box sx={{ textAlign: 'center', minWidth: { xs: '60px', md: '80px' } }}>
+      <Typography 
+        variant="h4" 
+        sx={{ 
+          color: 'secondary.main',
+          fontSize: { xs: '1.8rem', md: '2.5rem' }
+        }}
+      >
+        {value.toString().padStart(2, '0')}
+      </Typography>
+      <Typography 
+        variant="body2" 
+        sx={{ 
+          mt: 1,
+          fontSize: { xs: '0.8rem', md: '1rem' }
+        }}
+      >
+        {label}
+      </Typography>
+    </Box>
+  );
+
   return (
     <Box sx={{ 
       display: 'flex', 
       gap: { xs: 2, md: 4 }, 
-      justifyContent: 'center',
-      pb: 10
+      justifyContent: 'center'
     }}>
-      <Box sx={{ textAlign: 'center' }}>
-        <Typography variant="h4">{timeLeft.days}</Typography>
-        <Typography variant="body1">DAYS</Typography>
-      </Box>
-      <Box sx={{ textAlign: 'center' }}>
-        <Typography variant="h4">{timeLeft.hours}</Typography>
-        <Typography variant="body1">HOURS</Typography>
-      </Box>
-      <Box sx={{ textAlign: 'center' }}>
-        <Typography variant="h4">{timeLeft.minutes}</Typography>
-        <Typography variant="body1">MINUTES</Typography>
-      </Box>
-      <Box sx={{ textAlign: 'center' }}>
-        <Typography variant="h4">{timeLeft.seconds}</Typography>
-        <Typography variant="body1">SECONDS</Typography>
-      </Box>
+      {timeUnit(timeLeft.days, 'DAYS')}
+      {timeUnit(timeLeft.hours, 'HOURS')}
+      {timeUnit(timeLeft.minutes, 'MINUTES')}
+      {timeUnit(timeLeft.seconds, 'SECONDS')}
     </Box>
   );
 };
