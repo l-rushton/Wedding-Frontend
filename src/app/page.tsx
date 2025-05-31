@@ -1,6 +1,6 @@
 'use client';
 
-import { Container, Typography, Box } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 import Image from 'next/image';
 import Countdown from './components/Countdown';
 import PageFade from './components/PageFade';
@@ -11,8 +11,9 @@ export default function Home() {
       <Box sx={{ 
         display: 'flex',
         flexDirection: 'column',
-        pt:  { xs: 0, md: 0 },
-        gap:  { xs: 0, md: 4 }
+        pt: { xs: 0, md: 0 },
+        pb: { xs: 4, md: 8 },
+        gap: { xs: 0, md: 0 }
       }}>
         <Box sx={{ 
           display: 'flex',
@@ -20,14 +21,14 @@ export default function Home() {
           width: '100%',
           gap: 4,
           pt: 4,
-          pb: 4
+          pb: { xs: 4, md: 6 }
         }}>
           <Typography 
             variant="h1" 
             component="div"
             sx={{ 
               textAlign:  { xs: 'center', md: 'left' },
-              fontSize: { xs: '3rem', md: '5rem' },
+              fontSize: { xs: '3rem', md: '4rem' },
               pt: { xs: 0, md: 4 },
               color: 'secondary.main',
               fontStyle: 'italic'
@@ -44,13 +45,16 @@ export default function Home() {
           gap: { xs: 4, md: 8 },
           pb: 0,
           pt: 0,
-          px: 0
+          px: 0,
+          justifyContent: 'space-between',
+          alignItems: { xs: 'stretch', md: 'center' }
         }}>
           <Box sx={{ 
             display: 'flex', 
             flexDirection: 'column', 
             gap: 6,
-            width: { xs: '100%', md: 'auto' }
+            width: { xs: '100%', md: 'auto' },
+            flex: { xs: 1, md: 'none' }
           }}>
             <Box sx={{ 
               display: 'flex', 
@@ -93,7 +97,7 @@ export default function Home() {
             <Box sx={{ 
               display: { xs: 'none', md: 'block' }
             }}>
-              <Typography sx={{ textAlign: 'center', mb: 2 }}>
+              <Typography sx={{ textAlign: 'center', fontStyle: 'italic', mb: 2 }}>
                 See you in
               </Typography>
               <Countdown />
@@ -103,8 +107,8 @@ export default function Home() {
           <Box sx={{ 
             flex: { xs: 'unset', md: 1 },
             position: 'relative',
-            height: { xs: '300px', sm: '400px', md: '500px' },
-            width: '100%',
+            height: { xs: '300px', sm: '400px', md: '380px' },
+            minWidth: { md: '70%' },
             borderRadius: 0,
             overflow: 'hidden'
           }}>
@@ -112,7 +116,7 @@ export default function Home() {
               src="/images/izzylouisbench.jpg" 
               alt="Izzy & Louis at Ufton Court" 
               fill={true} 
-              style={{ objectFit: 'cover' }} 
+              style={{ objectFit: 'contain' }} 
               priority
             />
           </Box>

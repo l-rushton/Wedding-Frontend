@@ -16,7 +16,7 @@ const ItineraryPage = () => {
     { time: "14:00", content: "Wedding Breakfast" },
     { time: "15:00", content: "Speeches" },
     { time: "15:30", content: "Cutting the Cake" },
-    { time: "16:00", content: "Band?" },
+    { time: "16:00", content: "Band" },
     { time: "17:15", content: "First Dance" },
     { time: "17:30", content: "Party time" },
     { time: "18:30", content: "Pizza truck arrival" },
@@ -36,15 +36,18 @@ const ItineraryPage = () => {
 
   return (
     <Container maxWidth="lg" sx={{ mt: 5, px: { xs: 2, sm: 4, md: 8 }, position: 'relative' }}>
-        <Typography variant='h4' sx={{ mb: 4, textAlign: 'center' }}>
+        <Typography variant='h3' sx={{ mb: 4, textAlign: 'center' }}>
             Timeline
         </Typography>
-      <Timeline position="right">
+      <Timeline position="alternate">
         {timelineItems.map((item, index) => (
           <Fade in={visibleItems.includes(index)} timeout={800} key={`timeline-item-${index}`}>
             <TimelineItem>
               <TimelineOppositeContent>
-                <Typography variant='h6' sx={{ mt: '-4px' }}>
+                <Typography variant='h6' sx={{ 
+                  mt: '-4px',
+                  fontSize: { xs: '1.25rem', md: '1.5rem' }
+                }}>
                   {item.time}
                 </Typography>
               </TimelineOppositeContent>
@@ -53,7 +56,11 @@ const ItineraryPage = () => {
                 {index < timelineItems.length - 1 && <TimelineConnector />}
               </TimelineSeparator>
               <TimelineContent>
-                <Typography variant='h6' sx={{ mt: '-4px', mb: item.content === "First Dance" ? 1 : 5 }}>
+                <Typography variant='h6' sx={{ 
+                  mt: '-4px', 
+                  mb: item.content === "First Dance" ? 1 : 5,
+                  fontSize: { xs: '1.25rem', md: '1.5rem' }
+                }}>
                   {item.content}
                 </Typography>
                 {item.content === "First Dance" && (
@@ -62,7 +69,7 @@ const ItineraryPage = () => {
                     sx={{ 
                       mb: 5,
                       color: 'secondary.main',
-                      fontSize: { xs: '0.875rem', md: '1rem' }
+                      fontSize: { xs: '0.875rem', md: '1.1rem' }
                     }}
                   >
                     Got a song suggestion?{' '}

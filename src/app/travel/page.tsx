@@ -8,7 +8,10 @@ import PageFade from '../components/PageFade';
 const TravelPage = () => {
   return ( 
     <PageFade>
-      <Box sx={{ mt: 5, mb: 8 }}>
+      <Box 
+        sx={{ mt: 5, mb: 8 }}
+        px={{ xs: 2, md: 16 }}
+      >
         <Typography variant="h4" component="h1" gutterBottom sx={{ color: 'secondary.main' }}>
           How to get there
         </Typography>

@@ -12,6 +12,7 @@ const MenuPage = () => {
                 <Typography variant="h2" component="h1" gutterBottom align="center" 
                     sx={{ 
                         mb: 2,
+                        pb: 1,
                         fontFamily: 'var(--font-cinzel)',
                         color: theme.palette.secondary.main 
                     }}>
@@ -32,6 +33,7 @@ const MenuPage = () => {
                     <Typography variant="h4" component="h2" gutterBottom align="center"
                         sx={{ 
                             mb: 2,
+                            pt: 4,
                             fontFamily: 'var(--font-cinzel)',
                             color: theme.palette.secondary.main 
                         }}>
@@ -74,6 +76,7 @@ const MenuPage = () => {
                     <Typography variant="h4" component="h2" gutterBottom align="center"
                         sx={{ 
                             mb: 4,
+                            pt: 4,
                             fontFamily: 'var(--font-cinzel)',
                             color: theme.palette.secondary.main 
                         }}>
@@ -128,7 +131,7 @@ const MenuPage = () => {
                             fontFamily: 'var(--font-cinzel)',
                             color: theme.palette.secondary.main 
                         }}>
-                        Main course
+                        Main Course
                     </Typography>
 
 
@@ -153,7 +156,7 @@ const MenuPage = () => {
                         </ListItem>
                         <ListItem>
                             <Typography variant="body1" sx={{ width: '100%', fontStyle: 'italic' }}>
-                                Accompanied by coconut rice & crispy rice noodles
+                                Accompanied with coconut rice & crispy rice noodles
                             </Typography>
                         </ListItem>
                     </List>

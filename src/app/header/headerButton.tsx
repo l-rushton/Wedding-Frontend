@@ -5,13 +5,14 @@ import { Box, Typography, useTheme } from '@mui/material';
 
 interface HeaderButtonProps {
   label: string;
+  path: string;
   onClick: () => void;
 }
 
-const HeaderButton: React.FC<HeaderButtonProps> = ({ label, onClick }) => {
+const HeaderButton: React.FC<HeaderButtonProps> = ({ label, path, onClick }) => {
   const pathname = usePathname();
   const theme = useTheme();
-  const isActive = pathname === '/' ? label === 'Home' : pathname.includes(label.toLowerCase());
+  const isActive = pathname === path;
 
   return (
     <Box

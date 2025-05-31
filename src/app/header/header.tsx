@@ -3,6 +3,7 @@ import { AppBar, Toolbar, Typography, Box, IconButton, Drawer, List, ListItem, L
 import MenuIcon from '@mui/icons-material/Menu';
 import HeaderButton from './headerButton';
 import { useRouter, usePathname } from 'next/navigation';
+import Image from 'next/image';
 
 const Header: React.FC = () => {
   const router = useRouter();
@@ -20,9 +21,8 @@ const Header: React.FC = () => {
     { label: 'Home', path: '/' },
     { label: 'Itinerary', path: '/itinerary' },
     { label: 'Registry', path: '/registry' },
-    { label: 'Set List', path: '/setlist' },
     { label: 'Menu', path: '/menu' },
-    { label: 'Travel advice', path: '/travel' }
+    { label: 'Travel Advice', path: '/travel' }
   ];
 
   const getCurrentPageName = () => {
@@ -40,40 +40,57 @@ const Header: React.FC = () => {
     setMobileOpen(false);
   };
 
-  // Don't render anything until after mounting to prevent hydration mismatch
   if (!mounted) {
     return (
-      <Typography 
-        variant="h3" 
-        component="h3" 
-        align="center" 
+      <Box 
         sx={{ 
           mb: 4,
           pt: 4,
-          fontWeight: 'light',
-          color: 'secondary.main'
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
         }}
       >
-        Izzy & Louis
-      </Typography>
+        <Box sx={{ 
+          position: 'relative',
+          width: { xs: '200px', sm: '250px', md: '300px' },
+          height: { xs: '120px', sm: '150px', md: '180px' }
+        }}>
+          <Image 
+            src="/images/landi.png" 
+            alt="Izzy & Louis" 
+            fill={true} 
+            style={{ objectFit: 'contain' }} 
+          />
+        </Box>
+      </Box>
     );
   }
 
   return (
     <>
-        <Typography 
-            variant={isMobile ? "h3" : "h2"} 
-            component={isMobile ? "h3" : "h2"} 
-            align="center" 
+        <Box 
             sx={{ 
                 mb: 4,
                 pt: 4,
-                fontWeight: 'light',
-                color: 'secondary.main'
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
             }}
         >
-            Izzy & Louis
-        </Typography>
+            <Box sx={{ 
+              position: 'relative',
+              width: { xs: '200px', sm: '250px', md: '300px' },
+              height: { xs: '120px', sm: '150px', md: '180px' }
+            }}>
+              <Image 
+                src="/images/landi.png" 
+                alt="Izzy & Louis" 
+                fill={true} 
+                style={{ objectFit: 'contain' }} 
+              />
+            </Box>
+        </Box>
 
       <AppBar 
         position="sticky" 
@@ -138,6 +155,7 @@ const Header: React.FC = () => {
                 <HeaderButton 
                   key={item.label}
                   label={item.label} 
+                  path={item.path}
                   onClick={() => router.push(item.path)} 
                 />
               ))}
