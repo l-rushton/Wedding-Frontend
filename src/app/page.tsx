@@ -42,7 +42,7 @@ export default function Home() {
           display: 'flex',
           flexDirection: { xs: 'column', md: 'row' },
           width: '100%',
-          gap: { xs: 4, md: 8 },
+          gap: { xs: 2, md: 8 },
           pb: 0,
           pt: 0,
           px: 0,
@@ -58,20 +58,17 @@ export default function Home() {
           }}>
             <Box sx={{ 
               display: 'flex', 
-              gap: 8,
+              gap: { xs: 4, md: 8 },
               justifyContent: 'center',
               flexDirection: 'row',
               alignItems: 'flex-start'
             }}>
               <Box sx={{ textAlign: { xs: 'center', md: 'left' } }}>
-                <Typography sx={{ mb: 2 }}>
+                <Typography sx={{ mb: { xs: 1, md: 2} }}>
                   WHERE
                 </Typography>
                 <Typography variant="h5" sx={{ color: 'secondary.main' }}>
                   Ufton Court
-                </Typography>
-                <Typography variant="h5" sx={{ color: 'secondary.main' }}>
-                  Green Lane
                 </Typography>
                 <Typography variant="h5" sx={{ color: 'secondary.main' }}>
                   Berkshire
@@ -124,7 +121,7 @@ export default function Home() {
 
         <Box sx={{ 
           display: { xs: 'block', md: 'none' },
-          mt: 4
+          mt: { xs: 2, md: 4 }
         }}>
           <Typography sx={{ textAlign: 'center', mb: 2, fontStyle: 'italic' }}>
             See you in
