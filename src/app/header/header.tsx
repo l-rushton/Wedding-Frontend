@@ -22,11 +22,13 @@ const Header: React.FC = () => {
     { label: 'Itinerary', path: '/itinerary' },
     { label: 'Registry', path: '/registry' },
     { label: 'Menu', path: '/menu' },
-    { label: 'Travel Advice', path: '/travel' }
+    { label: 'Travel Advice', path: '/travel' },
+    { label: 'RSVP', path: '/rsvp' }
   ];
 
   const getCurrentPageName = () => {
     if (pathname === '/') return 'Home';
+    if (pathname.startsWith('/rsvp')) return 'RSVP';
     const currentItem = menuItems.find(item => item.path === pathname);
     return currentItem ? currentItem.label : '';
   };
@@ -44,8 +46,8 @@ const Header: React.FC = () => {
     return (
       <Box 
         sx={{ 
-          mb: 4,
-          pt: 4,
+          mb: 2,
+          pt: 2,
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center'
@@ -53,8 +55,8 @@ const Header: React.FC = () => {
       >
         <Box sx={{ 
           position: 'relative',
-          width: { xs: '200px', sm: '250px', md: '300px' },
-          height: { xs: '120px', sm: '150px', md: '180px' }
+          width: { xs: '150px', sm: '200px', md: '250px' },
+          height: { xs: '80px', sm: '120px', md: '150px' }
         }}>
           <Image 
             src="/images/landi.png" 
@@ -71,8 +73,8 @@ const Header: React.FC = () => {
     <>
         <Box 
             sx={{ 
-                mb: 4,
-                pt: 4,
+                mb: 2,
+                pt: 2,
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center'
@@ -80,8 +82,8 @@ const Header: React.FC = () => {
         >
             <Box sx={{ 
               position: 'relative',
-              width: { xs: '200px', sm: '250px', md: '300px' },
-              height: { xs: '120px', sm: '150px', md: '180px' }
+              width: { xs: '150px', sm: '200px', md: '250px' },
+              height: { xs: '80px', sm: '120px', md: '150px' }
             }}>
               <Image 
                 src="/images/landi.png" 
@@ -97,9 +99,10 @@ const Header: React.FC = () => {
         elevation={0}
         sx={{ 
           bgcolor: 'primary.main',
-          color: 'black',
-          borderTop: '1px solid black',
-          borderBottom: '1px solid black'
+          color: 'secondary.main',
+          borderTop: '1px solid',
+          borderBottom: '1px solid',
+          borderColor: 'secondary.main'
         }}
       >
         <Toolbar sx={{ justifyContent: isMobile ? 'normal' : 'center' }}>

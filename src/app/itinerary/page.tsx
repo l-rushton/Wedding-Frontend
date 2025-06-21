@@ -36,30 +36,38 @@ const ItineraryPage = () => {
 
   return (
     <Container maxWidth="lg" sx={{ mt: 5, px: { xs: 2, sm: 4, md: 8 }, position: 'relative' }}>
-        <Typography variant='h3' sx={{ mb: 4, textAlign: 'center' }}>
-            Timeline
-        </Typography>
-      <Timeline position="alternate">
+      <Timeline position="alternate" sx={{ 
+        '& .MuiTimelineConnector-root': {
+          bgcolor: 'secondary.main'
+        }
+      }}>
         {timelineItems.map((item, index) => (
           <Fade in={visibleItems.includes(index)} timeout={800} key={`timeline-item-${index}`}>
             <TimelineItem>
               <TimelineOppositeContent>
                 <Typography variant='h6' sx={{ 
                   mt: '-4px',
-                  fontSize: { xs: '1.25rem', md: '1.5rem' }
+                  fontSize: { 
+                    xs: '1.25rem', 
+                    md: '1.5rem'
+                  },
+                  color: 'black'
                 }}>
                   {item.time}
                 </Typography>
               </TimelineOppositeContent>
               <TimelineSeparator>
-                <TimelineDot color="secondary" />
-                {index < timelineItems.length - 1 && <TimelineConnector />}
+                <TimelineDot sx={{ bgcolor: 'secondary.main' }} />
+                {index < timelineItems.length - 1 && (
+                  <TimelineConnector sx={{ bgcolor: 'secondary.main' }} />
+                )}
               </TimelineSeparator>
               <TimelineContent>
                 <Typography variant='h6' sx={{ 
                   mt: '-4px', 
                   mb: item.content === "First Dance" ? 1 : 5,
-                  fontSize: { xs: '1.25rem', md: '1.5rem' }
+                  fontSize: { xs: '1.25rem', md: '1.5rem' },
+                  color: 'black'
                 }}>
                   {item.content}
                 </Typography>

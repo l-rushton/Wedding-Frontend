@@ -3,10 +3,50 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+model Address {
+  id      String  @id @default(cuid()) // Auto-generated UUID for QR codes
+  address String
+  guests  Guest[]
+}
+
+model Guest {
+  id            String   @id @default(cuid())
+  name          String
+  rsvp          Boolean?
+  dietaryReqs   String?
+  addressId     String?
+  address       Address? @relation(fields: [addressId], references: [id])
+  menuChoices   Menu?
+}
+
+model Menu {
+  id        String     @id @default(cuid())
+  appetiser Appetiser?
+  main      MainCourse?
+  dessert   Dessert?
+  guest     Guest      @relation(fields: [guestId], references: [id])
+  guestId   String     @unique
+}
+
+enum Appetiser {
+  mushrooms
+  fishcakes
+}
+
+enum MainCourse {
+  green
+  massaman
+}
+
+enum Dessert {
+  lemonTart
+  chocolateMousse
+}
+

@@ -7,6 +7,8 @@ import theme from '../theme/theme';
 import Header from './header/header';
 import { Box } from '@mui/material';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
 
 const playfairDisplay = Playfair_Display({ 
   subsets: ['latin'],
@@ -23,6 +25,19 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+
+  useEffect(() => {
+    // Set page title based on current path
+    if (pathname.startsWith('/rsvp')) {
+      document.title = 'RSVP';
+    } else if (pathname === '/') {
+      document.title = 'Izzy & Louis Wedding';
+    } else {
+      document.title = 'Izzy & Louis Wedding';
+    }
+  }, [pathname]);
+
   return (
     <html lang="en">
       <body className={playfairDisplay.className}>

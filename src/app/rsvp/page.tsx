@@ -5,7 +5,6 @@ import { useSearchParams } from 'next/navigation';
 import { 
   Typography, 
   Box, 
-  TextField, 
   Button, 
   FormControl, 
   FormLabel, 
@@ -15,15 +14,44 @@ import {
   Alert,
   Paper,
   CircularProgress,
-  Divider
+  Divider,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
+  TextField
 } from '@mui/material';
 import PageFade from '../components/PageFade';
 
-interface GuestData {
+interface Guest {
   id: string;
-  primaryGuestName: string;
-  plusOneName?: string;
-  email?: string;
+  name: string;
+  rsvp?: boolean;
+  dietaryReqs?: string;
+  addressId?: string;
+  menuChoices?: any;
+}
+
+interface Address {
+  id: string;
+  address: string;
+  guests: Guest[];
+}
+
+interface GuestData {
+  type: 'guest' | 'address';
+  guest?: Guest;
+  address?: Address;
+  guests?: Guest[];
+}
+
+interface PersonRSVP {
+  guestId?: string;
+  name: string;
+  attending: string;
+  appetiser: string;
+  main: string;
+  dessert: string;
+  dietaryReqs: string;
 }
 
 const RSVPPage = () => {
@@ -33,29 +61,57 @@ const RSVPPage = () => {
   const [guestData, setGuestData] = useState<GuestData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [formData, setFormData] = useState({
-    primaryAttendance: '',
-    primaryDietaryRequirements: '',
-    plusOneAttendance: '',
-    plusOneDietaryRequirements: '',
-    email: '',
-    songSuggestion: '',
-    additionalComments: ''
-  });
+  const [peopleRSVP, setPeopleRSVP] = useState<PersonRSVP[]>([]);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [isDirectAccess, setIsDirectAccess] = useState(false);
 
-  // Fetch guest data based on invite ID
+  // Set page title for mobile compatibility
+  useEffect(() => {
+    // Set title immediately
+    document.title = 'RSVP';
+    
+    // Try multiple times with different delays for mobile browsers
+    const timers = [
+      setTimeout(() => document.title = 'RSVP', 100),
+      setTimeout(() => document.title = 'RSVP', 500),
+      setTimeout(() => document.title = 'RSVP', 1000),
+      setTimeout(() => document.title = 'RSVP', 2000)
+    ];
+    
+    return () => {
+      timers.forEach(timer => clearTimeout(timer));
+    };
+  }, []);
+
+  // Menu options with dietary information
+  // TODO: UPDATE DIETARY REQUIREMENTS
+  const menuOptions = {
+    appetisers: [
+      { value: 'mushrooms', label: 'Salt & pepper wild mushrooms', dietary: 'Vegan' },
+      { value: 'fishcakes', label: 'Thai cod fishcakes' }
+    ],
+    mains: [
+      { value: 'green', label: 'Green curry', dietary: 'Vegetarian, Vegan, Gluten-free' },
+      { value: 'massaman', label: 'Massaman curry', dietary: 'Contains nuts, Gluten-free' }
+    ],
+    desserts: [
+      { value: 'lemonTart', label: 'Lemon tart', dietary: 'Vegetarian, Contains gluten' },
+      { value: 'chocolateMousse', label: 'Chocolate mousse', dietary: 'Vegan, Gluten-free' }
+    ]
+  };
+
+  // Fetch guest data based on invite ID or handle direct access
   useEffect(() => {
     const fetchGuestData = async () => {
       if (!inviteId) {
-        setError('Invalid invitation link. Please check your QR code.');
+        // Direct access - show name input form
+        setIsDirectAccess(true);
         setLoading(false);
         return;
       }
 
       try {
-        // Replace with your actual API endpoint
         const response = await fetch(`/api/guests/${inviteId}`);
         
         if (!response.ok) {
@@ -65,14 +121,34 @@ const RSVPPage = () => {
         const data: GuestData = await response.json();
         setGuestData(data);
         
-        // Pre-fill email if available
-        if (data.email) {
-          setFormData(prev => ({
-            ...prev,
-            email: data.email || ''
-          }));
+        // Initialize RSVP data for each person
+        const initialRSVP: PersonRSVP[] = [];
+        
+        if (data.type === 'guest' && data.guest) {
+          initialRSVP.push({
+            guestId: data.guest.id,
+            name: data.guest.name,
+            attending: '',
+            appetiser: '',
+            main: '',
+            dessert: '',
+            dietaryReqs: ''
+          });
+        } else if (data.type === 'address' && data.guests) {
+          data.guests.forEach(guest => {
+            initialRSVP.push({
+              guestId: guest.id,
+              name: guest.name,
+              attending: '',
+              appetiser: '',
+              main: '',
+              dessert: '',
+              dietaryReqs: ''
+            });
+          });
         }
         
+        setPeopleRSVP(initialRSVP);
         setLoading(false);
       } catch (err) {
         setError('Unable to load invitation details. Please contact us directly.');
@@ -83,12 +159,46 @@ const RSVPPage = () => {
     fetchGuestData();
   }, [inviteId]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+  const handleNameChange = (index: number, value: string) => {
+    const updatedRSVP = [...peopleRSVP];
+    updatedRSVP[index].name = value;
+    setPeopleRSVP(updatedRSVP);
+  };
+
+  const handleAddPerson = () => {
+    setPeopleRSVP([...peopleRSVP, {
+      name: '',
+      attending: '',
+      appetiser: '',
+      main: '',
+      dessert: '',
+      dietaryReqs: ''
+    }]);
+  };
+
+  const handleRemovePerson = (index: number) => {
+    if (peopleRSVP.length > 1) {
+      const updatedRSVP = peopleRSVP.filter((_, i) => i !== index);
+      setPeopleRSVP(updatedRSVP);
+    }
+  };
+
+  const handleAttendanceChange = (index: number, value: string) => {
+    const updatedRSVP = [...peopleRSVP];
+    updatedRSVP[index].attending = value;
+    setPeopleRSVP(updatedRSVP);
+  };
+
+  const handleMenuChange = (index: number, course: 'appetiser' | 'main' | 'dessert', value: string) => {
+    const updatedRSVP = [...peopleRSVP];
+    updatedRSVP[index][course] = value;
+    setPeopleRSVP(updatedRSVP);
+  };
+
+  const handleDietaryChange = (index: number, value: string) => {
+    const updatedRSVP = [...peopleRSVP];
+    updatedRSVP[index].dietaryReqs = value;
+    setPeopleRSVP(updatedRSVP);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -96,7 +206,6 @@ const RSVPPage = () => {
     setSubmitting(true);
     
     try {
-      // Replace with your actual API endpoint
       const response = await fetch('/api/rsvp', {
         method: 'POST',
         headers: {
@@ -104,8 +213,9 @@ const RSVPPage = () => {
         },
         body: JSON.stringify({
           inviteId,
-          ...formData,
-          guestData
+          peopleRSVP,
+          guestData,
+          isDirectAccess
         }),
       });
       
@@ -120,6 +230,20 @@ const RSVPPage = () => {
       setSubmitting(false);
     }
   };
+
+  // Initialize direct access form
+  useEffect(() => {
+    if (isDirectAccess && peopleRSVP.length === 0) {
+      setPeopleRSVP([{
+        name: '',
+        attending: '',
+        appetiser: '',
+        main: '',
+        dessert: '',
+        dietaryReqs: ''
+      }]);
+    }
+  }, [isDirectAccess, peopleRSVP.length]);
 
   // Loading state
   if (loading) {
@@ -190,147 +314,173 @@ const RSVPPage = () => {
   return (
     <PageFade>
       <Box sx={{ py: 4 }}>
-        <Typography variant="h2" component="h1" gutterBottom align="center" 
-          sx={{ 
-            mb: 2,
-            pb: 1,
-            color: 'secondary.main',
-            fontStyle: 'italic'
-          }}>
-          RSVP
-        </Typography>
-
-        <Typography variant="body1" component="p" gutterBottom align="center" 
+        <Typography variant="h4" component="h1" gutterBottom align="center" 
           sx={{ 
             mb: 4,
             color: 'secondary.main',
             maxWidth: '600px',
-            mx: 'auto'
+            mx: 'auto',
+            fontWeight: 'regular'
           }}>
-          Please let us know if you'll be joining us for our special day by filling out the form below
+          {isDirectAccess 
+            ? "Please let us know if you'll be joining us and choose your menu options"
+            : "Please let us know if you'll be joining us and choose your menu options"
+          }
         </Typography>
 
         <Paper elevation={1} sx={{ 
-          maxWidth: '700px', 
+          maxWidth: '800px', 
           mx: 'auto', 
           p: 4,
           bgcolor: 'rgba(255, 255, 255, 0.8)'
         }}>
           <form onSubmit={handleSubmit}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
               
-              {/* Primary Guest */}
-              <Typography variant="h6" sx={{ color: 'secondary.main', fontWeight: 'bold' }}>
-                {guestData?.primaryGuestName}
-              </Typography>
-              
-              <FormControl component="fieldset" required>
-                <FormLabel component="legend" sx={{ color: 'secondary.main', fontWeight: 'bold' }}>
-                  Will you be attending?
-                </FormLabel>
-                <RadioGroup
-                  name="primaryAttendance"
-                  value={formData.primaryAttendance}
-                  onChange={handleInputChange}
-                  row
-                >
-                  <FormControlLabel value="yes" control={<Radio />} label="Yes, I'll be there!" />
-                  <FormControlLabel value="no" control={<Radio />} label="Sorry, I can't make it" />
-                </RadioGroup>
-              </FormControl>
-
-              {formData.primaryAttendance === 'yes' && (
-                <TextField
-                  fullWidth
-                  label="Dietary Requirements or Allergies"
-                  name="primaryDietaryRequirements"
-                  value={formData.primaryDietaryRequirements}
-                  onChange={handleInputChange}
-                  multiline
-                  rows={2}
-                  variant="outlined"
-                  helperText="Please let us know about any dietary restrictions, allergies, or special requirements"
-                />
-              )}
-
-              {/* Plus One (if applicable) */}
-              {guestData?.plusOneName && (
-                <>
-                  <Divider sx={{ my: 2 }} />
+              {peopleRSVP.map((person, index) => (
+                <Box key={index} sx={{ border: '1px solid #e0e0e0', borderRadius: 2, p: 3 }}>
+                  {isDirectAccess && (
+                    <Box sx={{ mb: 3 }}>
+                      <TextField
+                        fullWidth
+                        label="Full Name"
+                        value={person.name}
+                        onChange={(e) => handleNameChange(index, e.target.value)}
+                        required
+                        variant="outlined"
+                      />
+                    </Box>
+                  )}
                   
-                  <Typography variant="h6" sx={{ color: 'secondary.main', fontWeight: 'bold' }}>
-                    {guestData.plusOneName}
+                  <Typography variant="h6" sx={{ color: 'secondary.main', fontWeight: 'bold', mb: 3 }}>
+                    {isDirectAccess ? person.name || 'Guest' : person.name}
                   </Typography>
                   
-                  <FormControl component="fieldset" required>
+                  {/* Attendance */}
+                  <FormControl component="fieldset" required sx={{ mb: 3 }}>
                     <FormLabel component="legend" sx={{ color: 'secondary.main', fontWeight: 'bold' }}>
-                      Will they be attending?
+                      Will you be attending?
                     </FormLabel>
                     <RadioGroup
-                      name="plusOneAttendance"
-                      value={formData.plusOneAttendance}
-                      onChange={handleInputChange}
+                      name={`attending-${index}`}
+                      value={person.attending}
+                      onChange={(e) => handleAttendanceChange(index, e.target.value)}
                       row
                     >
-                      <FormControlLabel value="yes" control={<Radio />} label="Yes, they'll be there!" />
-                      <FormControlLabel value="no" control={<Radio />} label="Sorry, they can't make it" />
+                      <FormControlLabel value="yes" control={<Radio />} label="Yes, I'll be there!" />
+                      <FormControlLabel value="no" control={<Radio />} label="Sorry, I can't make it" />
                     </RadioGroup>
                   </FormControl>
 
-                  {formData.plusOneAttendance === 'yes' && (
-                    <TextField
-                      fullWidth
-                      label="Their Dietary Requirements or Allergies"
-                      name="plusOneDietaryRequirements"
-                      value={formData.plusOneDietaryRequirements}
-                      onChange={handleInputChange}
-                      multiline
-                      rows={2}
-                      variant="outlined"
-                      helperText="Please let us know about any dietary restrictions, allergies, or special requirements"
-                    />
+                  {/* Menu choices and dietary requirements - only show if attending */}
+                  {person.attending === 'yes' && (
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                      <Typography variant="subtitle1" sx={{ color: 'secondary.main', fontWeight: 'bold' }}>
+                        Menu Choices
+                      </Typography>
+                      
+                      <FormControl fullWidth>
+                        <FormLabel>Starter</FormLabel>
+                        <Select
+                          value={person.appetiser}
+                          onChange={(e: SelectChangeEvent) => handleMenuChange(index, 'appetiser', e.target.value)}
+                          required
+                        >
+                          {menuOptions.appetisers.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                              <Box>
+                                <Typography variant="body1">{option.label}</Typography>
+                                <Typography variant="caption" color="text.secondary">
+                                  {option.dietary}
+                                </Typography>
+                              </Box>
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+
+                      <FormControl fullWidth>
+                        <FormLabel>Main Course</FormLabel>
+                        <Select
+                          value={person.main}
+                          onChange={(e: SelectChangeEvent) => handleMenuChange(index, 'main', e.target.value)}
+                          required
+                        >
+                          {menuOptions.mains.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                              <Box>
+                                <Typography variant="body1">{option.label}</Typography>
+                                <Typography variant="caption" color="text.secondary">
+                                  {option.dietary}
+                                </Typography>
+                              </Box>
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+
+                      <FormControl fullWidth>
+                        <FormLabel>Dessert</FormLabel>
+                        <Select
+                          value={person.dessert}
+                          onChange={(e: SelectChangeEvent) => handleMenuChange(index, 'dessert', e.target.value)}
+                          required
+                        >
+                          {menuOptions.desserts.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                              <Box>
+                                <Typography variant="body1">{option.label}</Typography>
+                                <Typography variant="caption" color="text.secondary">
+                                  {option.dietary}
+                                </Typography>
+                              </Box>
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+
+                      <TextField
+                        fullWidth
+                        label="Additional Dietary Requirements or Allergies"
+                        name={`dietary-${index}`}
+                        value={person.dietaryReqs}
+                        onChange={(e) => handleDietaryChange(index, e.target.value)}
+                        multiline
+                        rows={2}
+                        variant="outlined"
+                        helperText="Please let us know about any additional dietary restrictions, allergies, or special requirements not covered above"
+                      />
+                    </Box>
                   )}
-                </>
+
+                  {isDirectAccess && peopleRSVP.length > 1 && (
+                    <Button
+                      type="button"
+                      variant="outlined"
+                      color="error"
+                      onClick={() => handleRemovePerson(index)}
+                      sx={{ mt: 2 }}
+                    >
+                      Remove Person
+                    </Button>
+                  )}
+                </Box>
+              ))}
+
+              {isDirectAccess && (
+                <Button
+                  type="button"
+                  variant="outlined"
+                  onClick={handleAddPerson}
+                  sx={{ 
+                    alignSelf: 'flex-start',
+                    color: 'secondary.main',
+                    borderColor: 'secondary.main'
+                  }}
+                >
+                  Add Another Person
+                </Button>
               )}
-
-              <Divider sx={{ my: 2 }} />
-
-              {/* Contact Email */}
-              <TextField
-                fullWidth
-                label="Email Address"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                required
-                variant="outlined"
-                helperText="We'll use this to send you any updates about the wedding"
-              />
-
-              {/* Song Suggestion */}
-              <TextField
-                fullWidth
-                label="Song Suggestion for the Dance Floor"
-                name="songSuggestion"
-                value={formData.songSuggestion}
-                onChange={handleInputChange}
-                variant="outlined"
-                helperText="Help us create the perfect playlist!"
-              />
-
-              {/* Additional Comments */}
-              <TextField
-                fullWidth
-                label="Additional Comments or Messages"
-                name="additionalComments"
-                value={formData.additionalComments}
-                onChange={handleInputChange}
-                multiline
-                rows={3}
-                variant="outlined"
-                helperText="Any special messages, questions, or requests?"
-              />
 
               {/* Submit Button */}
               <Button
@@ -341,13 +491,15 @@ const RSVPPage = () => {
                 sx={{
                   mt: 2,
                   py: 1.5,
+                  color: "primary.main",
                   bgcolor: 'secondary.main',
                   '&:hover': {
                     bgcolor: 'secondary.dark'
-                  }
+                  },
+                  fontStyle: 'bold'
                 }}
               >
-                {submitting ? 'Submitting...' : 'Submit RSVP'}
+                {submitting ? 'Submitting...' : 'Submit'}
               </Button>
             </Box>
           </form>
