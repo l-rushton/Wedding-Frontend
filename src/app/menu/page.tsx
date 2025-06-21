@@ -8,77 +8,24 @@ const MenuPage = () => {
     const theme = useTheme();
     return (
         <PageFade>
-            <Box sx={{ py: 4 }}>
-                <Typography variant="h2" component="h1" gutterBottom align="center" 
-                    sx={{ 
-                        mb: 2,
-                        pb: 1,
-                        fontFamily: 'var(--font-cinzel)',
-                        color: theme.palette.secondary.main 
-                    }}>
-                    Food
-                </Typography>
-
+            <Box sx={{ py: 4, alignContent: 'left' }}>
                 <Typography variant="body1" component="h5" gutterBottom align="center" 
-                    sx={{ 
-                        mb: 2,
+                    sx={{
                         fontFamily: 'var(--font-cinzel)',
-                        color: theme.palette.secondary.main,
-                        fontStyle: 'italic'
+                        color: 'black',
+                        fontSize: '1.25rem'
                     }}>
                     Please make your choices by scanning the QR code in your invitation
                 </Typography>
-
-                <Box sx={{ mb: 2 }}>
-                    <Typography variant="h4" component="h2" gutterBottom align="center"
-                        sx={{ 
-                            mb: 2,
-                            pt: 4,
-                            fontFamily: 'var(--font-cinzel)',
-                            color: theme.palette.secondary.main 
-                        }}>
-                        Canapés
-                    </Typography>
-
-                    <List sx={{
-                        width: '100%',
-                        maxWidth: 600,
-                        mx: 'auto',
-                        '& .MuiListItem-root': {
-                            textAlign: 'center',
-                            py: 1
-                        }
-                    }}>
-                        <ListItem>
-                            <Typography variant="body1" sx={{ width: '100%' }}>
-                                Tempura corn with plum dip (v)
-                            </Typography>
-                        </ListItem>
-                        <ListItem>
-                            <Typography variant="body1" sx={{ width: '100%' }}>
-                                Coconut prawns
-                            </Typography>
-                        </ListItem>
-                        <ListItem>
-                            <Typography variant="body1" sx={{ width: '100%' }}>
-                                Sticky Thai meatballs
-                            </Typography>
-                        </ListItem>
-                        <ListItem>
-                            <Typography variant="body1" sx={{ width: '100%' }}>
-                                Crispy vegetable spring rolls (ve)
-                            </Typography>
-                        </ListItem>
-                    </List>
-                </Box>
 
                 <Box sx={{ mb: 0 }}>
                     <Typography variant="h4" component="h2" gutterBottom align="center"
                         sx={{ 
                             mb: 4,
-                            pt: 4,
+                            pt: 3,
                             fontFamily: 'var(--font-cinzel)',
-                            color: theme.palette.secondary.main 
+                            color: theme.palette.secondary.main,
+                            fontStyle: 'italic'
                         }}>
                         Wedding Breakfast
                     </Typography>
@@ -200,6 +147,60 @@ const MenuPage = () => {
                         </ListItem>
                     </List>
                     </Box>
+                </Box>
+
+                <Typography variant="h5" component="h5" gutterBottom align="center"
+                        sx={{ 
+                            mb: 0,
+                            pt: 2,
+                            fontFamily: 'var(--font-cinzel)',
+                            color: theme.palette.secondary.main 
+                        }}>
+                        ~
+                    </Typography>
+
+                <Box sx={{ mb: 2 }}>
+                    <Typography variant="h4" component="h2" gutterBottom align="center"
+                        sx={{ 
+                            mb: 2,
+                            pt: 3,
+                            fontFamily: 'var(--font-cinzel)',
+                            color: theme.palette.secondary.main,
+                            fontStyle: 'italic'
+                        }}>
+                        Canapés
+                    </Typography>
+
+                    <List sx={{
+                        width: '100%',
+                        maxWidth: 600,
+                        mx: 'auto',
+                        '& .MuiListItem-root': {
+                            textAlign: 'center',
+                            py: 1
+                        }
+                    }}>
+                        <ListItem>
+                            <Typography variant="body1" sx={{ width: '100%' }}>
+                                Tempura corn with plum dip (v)
+                            </Typography>
+                        </ListItem>
+                        <ListItem>
+                            <Typography variant="body1" sx={{ width: '100%' }}>
+                                Coconut prawns
+                            </Typography>
+                        </ListItem>
+                        <ListItem>
+                            <Typography variant="body1" sx={{ width: '100%' }}>
+                                Sticky Thai meatballs
+                            </Typography>
+                        </ListItem>
+                        <ListItem>
+                            <Typography variant="body1" sx={{ width: '100%' }}>
+                                Crispy vegetable spring rolls (ve)
+                            </Typography>
+                        </ListItem>
+                    </List>
                 </Box>
             </Box>
         </PageFade>

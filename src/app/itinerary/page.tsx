@@ -67,7 +67,8 @@ const ItineraryPage = () => {
                   mt: '-4px', 
                   mb: item.content === "First Dance" ? 1 : 5,
                   fontSize: { xs: '1.25rem', md: '1.5rem' },
-                  color: 'black'
+                  color: 'black',
+                  fontStyle: 'italic'
                 }}>
                   {item.content}
                 </Typography>

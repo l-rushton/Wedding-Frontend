@@ -314,18 +314,17 @@ const RSVPPage = () => {
   return (
     <PageFade>
       <Box sx={{ py: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom align="center" 
+        <Typography variant="h6" component="h4" gutterBottom align="left" 
           sx={{ 
             mb: 4,
-            color: 'secondary.main',
+            px: 2,
+            color: 'black',
             maxWidth: '600px',
             mx: 'auto',
-            fontWeight: 'regular'
+            fontWeight: 'light',
+            // fontStyle: 'italic'
           }}>
-          {isDirectAccess 
-            ? "Please let us know if you'll be joining us and choose your menu options"
-            : "Please let us know if you'll be joining us and choose your menu options"
-          }
+            Please let us know if you'll be joining us, and what you'd like to eat
         </Typography>
 
         <Paper elevation={1} sx={{ 
