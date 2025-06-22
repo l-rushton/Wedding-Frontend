@@ -201,6 +201,29 @@ const RSVPPage = () => {
     setPeopleRSVP(updatedRSVP);
   };
 
+  // Validation function to check if all required fields are filled
+  const isFormValid = () => {
+    return peopleRSVP.every(person => {
+      // Check if name is filled (required for direct access)
+      if (isDirectAccess && !person.name.trim()) {
+        return false;
+      }
+      
+      // Check if attendance is selected
+      if (!person.attending) {
+        return false;
+      }
+      
+      // If attending, check if all menu choices are selected
+      if (person.attending === 'yes') {
+        return person.appetiser && person.main && person.dessert;
+      }
+      
+      // If not attending, only attendance selection is required
+      return true;
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
@@ -313,23 +336,18 @@ const RSVPPage = () => {
 
   return (
     <PageFade>
-      <Box sx={{ py: 4 }}>
-        <Typography variant="h6" component="h4" gutterBottom align="left" 
-          sx={{ 
-            mb: 4,
-            px: 2,
-            color: 'black',
-            maxWidth: '600px',
-            mx: 'auto',
-            fontWeight: 'light',
-            // fontStyle: 'italic'
-          }}>
-            Please let us know if you'll be joining us, and what you'd like to eat
+      <Box 
+        sx={{ mt: 5, mb: 8 }}
+        px={{ xs: 2, md: 16 }}
+      >
+        <Typography variant="h4" component="h2" gutterBottom sx={{ 
+          color: 'secondary.main',
+          mb: 4
+        }}>
+          Let us know if you can make it!
         </Typography>
 
         <Paper elevation={1} sx={{ 
-          maxWidth: '800px', 
-          mx: 'auto', 
           p: 4,
           bgcolor: 'rgba(255, 255, 255, 0.8)'
         }}>
@@ -347,6 +365,16 @@ const RSVPPage = () => {
                         onChange={(e) => handleNameChange(index, e.target.value)}
                         required
                         variant="outlined"
+                        sx={{
+                          '& .MuiOutlinedInput-root': {
+                            '&.Mui-focused fieldset': {
+                              borderColor: 'secondary.main',
+                            },
+                          },
+                          '& .MuiInputLabel-root.Mui-focused': {
+                            color: 'secondary.main',
+                          },
+                        }}
                       />
                     </Box>
                   )}
@@ -357,7 +385,13 @@ const RSVPPage = () => {
                   
                   {/* Attendance */}
                   <FormControl component="fieldset" required sx={{ mb: 3 }}>
-                    <FormLabel component="legend" sx={{ color: 'secondary.main', fontWeight: 'bold' }}>
+                    <FormLabel component="legend" sx={{ 
+                      color: 'secondary.main', 
+                      fontWeight: 'bold',
+                      '&.Mui-focused': {
+                        color: 'secondary.main',
+                      },
+                    }}>
                       Will you be attending?
                     </FormLabel>
                     <RadioGroup
@@ -366,8 +400,32 @@ const RSVPPage = () => {
                       onChange={(e) => handleAttendanceChange(index, e.target.value)}
                       row
                     >
-                      <FormControlLabel value="yes" control={<Radio />} label="Yes, I'll be there!" />
-                      <FormControlLabel value="no" control={<Radio />} label="Sorry, I can't make it" />
+                      <FormControlLabel 
+                        value="yes" 
+                        control={
+                          <Radio 
+                            sx={{
+                              '&.Mui-checked': {
+                                color: 'secondary.main',
+                              },
+                            }}
+                          />
+                        } 
+                        label="Yes, I'll be there!" 
+                      />
+                      <FormControlLabel 
+                        value="no" 
+                        control={
+                          <Radio 
+                            sx={{
+                              '&.Mui-checked': {
+                                color: 'secondary.main',
+                              },
+                            }}
+                          />
+                        } 
+                        label="Sorry, I can't make it" 
+                      />
                     </RadioGroup>
                   </FormControl>
 
@@ -379,11 +437,28 @@ const RSVPPage = () => {
                       </Typography>
                       
                       <FormControl fullWidth>
-                        <FormLabel>Starter</FormLabel>
+                        <FormLabel sx={{ 
+                          color: 'secondary.main',
+                          '&.Mui-focused': {
+                            color: 'secondary.main',
+                          },
+                        }}>
+                          Starter
+                        </FormLabel>
                         <Select
                           value={person.appetiser}
                           onChange={(e: SelectChangeEvent) => handleMenuChange(index, 'appetiser', e.target.value)}
                           required
+                          sx={{
+                            '& .MuiOutlinedInput-root': {
+                              '&.Mui-focused fieldset': {
+                                borderColor: 'secondary.main',
+                              },
+                            },
+                            '& .MuiInputLabel-root.Mui-focused': {
+                              color: 'secondary.main',
+                            },
+                          }}
                         >
                           {menuOptions.appetisers.map((option) => (
                             <MenuItem key={option.value} value={option.value}>
@@ -399,11 +474,28 @@ const RSVPPage = () => {
                       </FormControl>
 
                       <FormControl fullWidth>
-                        <FormLabel>Main Course</FormLabel>
+                        <FormLabel sx={{ 
+                          color: 'secondary.main',
+                          '&.Mui-focused': {
+                            color: 'secondary.main',
+                          },
+                        }}>
+                          Main Course
+                        </FormLabel>
                         <Select
                           value={person.main}
                           onChange={(e: SelectChangeEvent) => handleMenuChange(index, 'main', e.target.value)}
                           required
+                          sx={{
+                            '& .MuiOutlinedInput-root': {
+                              '&.Mui-focused fieldset': {
+                                borderColor: 'secondary.main',
+                              },
+                            },
+                            '& .MuiInputLabel-root.Mui-focused': {
+                              color: 'secondary.main',
+                            },
+                          }}
                         >
                           {menuOptions.mains.map((option) => (
                             <MenuItem key={option.value} value={option.value}>
@@ -419,11 +511,28 @@ const RSVPPage = () => {
                       </FormControl>
 
                       <FormControl fullWidth>
-                        <FormLabel>Dessert</FormLabel>
+                        <FormLabel sx={{ 
+                          color: 'secondary.main',
+                          '&.Mui-focused': {
+                            color: 'secondary.main',
+                          },
+                        }}>
+                          Dessert
+                        </FormLabel>
                         <Select
                           value={person.dessert}
                           onChange={(e: SelectChangeEvent) => handleMenuChange(index, 'dessert', e.target.value)}
                           required
+                          sx={{
+                            '& .MuiOutlinedInput-root': {
+                              '&.Mui-focused fieldset': {
+                                borderColor: 'secondary.main',
+                              },
+                            },
+                            '& .MuiInputLabel-root.Mui-focused': {
+                              color: 'secondary.main',
+                            },
+                          }}
                         >
                           {menuOptions.desserts.map((option) => (
                             <MenuItem key={option.value} value={option.value}>
@@ -448,6 +557,16 @@ const RSVPPage = () => {
                         rows={2}
                         variant="outlined"
                         helperText="Please let us know about any additional dietary restrictions, allergies, or special requirements not covered above"
+                        sx={{
+                          '& .MuiOutlinedInput-root': {
+                            '&.Mui-focused fieldset': {
+                              borderColor: 'secondary.main',
+                            },
+                          },
+                          '& .MuiInputLabel-root.Mui-focused': {
+                            color: 'secondary.main',
+                          },
+                        }}
                       />
                     </Box>
                   )}
@@ -486,7 +605,7 @@ const RSVPPage = () => {
                 type="submit"
                 variant="contained"
                 size="large"
-                disabled={submitting}
+                disabled={!isFormValid() || submitting}
                 sx={{
                   mt: 2,
                   py: 1.5,

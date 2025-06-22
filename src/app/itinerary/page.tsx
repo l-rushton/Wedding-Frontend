@@ -24,21 +24,43 @@ const ItineraryPage = () => {
   ];
 
   useEffect(() => {
-    const totalItems = timelineItems.length;
-    const animationDelay = 400;
+    // Check if animation has already played in this session
+    const hasAnimated = sessionStorage.getItem('itinerary-animated');
+    
+    if (hasAnimated) {
+      // If already animated, show all items immediately
+      setVisibleItems(timelineItems.map((_, index) => index));
+    } else {
+      // If not animated yet, play the animation and mark as done
+      const totalItems = timelineItems.length;
+      const animationDelay = 400;
 
-    for (let i = 0; i < totalItems; i++) {
-      setTimeout(() => {
-        setVisibleItems(prev => [...prev, i]);
-      }, i * animationDelay);
+      for (let i = 0; i < totalItems; i++) {
+        setTimeout(() => {
+          setVisibleItems(prev => [...prev, i]);
+        }, i * animationDelay);
+      }
+      
+      // Mark that animation has played in this session
+      sessionStorage.setItem('itinerary-animated', 'true');
     }
   }, []);
 
   return (
     <Container maxWidth="lg" sx={{ mt: 5, px: { xs: 2, sm: 4, md: 8 }, position: 'relative' }}>
+
+{/* <Typography variant="body1" component="h5" gutterBottom align="center" 
+            sx={{
+                fontFamily: 'var(--font-cinzel)',
+                color: 'black',
+                fontSize: '1.25rem'
+            }}>
+              Please arrive no later than 12:15 so we can start the ceremony on time!
+        </Typography> */}
       <Timeline position="alternate" sx={{ 
         '& .MuiTimelineConnector-root': {
-          bgcolor: 'secondary.main'
+          bgcolor: 'black',
+          width: '1px'
         }
       }}>
         {timelineItems.map((item, index) => (
@@ -51,23 +73,35 @@ const ItineraryPage = () => {
                     xs: '1.25rem', 
                     md: '1.5rem'
                   },
-                  color: 'black'
+                  color: 'secondary.main',
+                  fontStyle: 'italic'
                 }}>
                   {item.time}
                 </Typography>
               </TimelineOppositeContent>
               <TimelineSeparator>
-                <TimelineDot sx={{ bgcolor: 'secondary.main' }} />
+                <TimelineDot 
+                  variant="outlined"
+                  sx={{ 
+                    borderColor: 'black',
+                    width: '12px',
+                    height: '12px',
+                    borderWidth: '1px'
+                  }} 
+                />
                 {index < timelineItems.length - 1 && (
-                  <TimelineConnector sx={{ bgcolor: 'secondary.main' }} />
+                  <TimelineConnector sx={{ 
+                    bgcolor: 'black',
+                    width: '1px'
+                  }} />
                 )}
               </TimelineSeparator>
               <TimelineContent>
                 <Typography variant='h6' sx={{ 
-                  mt: '-4px', 
+                  mt: '-8px', 
                   mb: item.content === "First Dance" ? 1 : 5,
-                  fontSize: { xs: '1.25rem', md: '1.5rem' },
-                  color: 'black',
+                  fontSize: { xs: '1.5rem', md: '1.75rem' },
+                  color: 'secondary.main',
                   fontStyle: 'italic'
                 }}>
                   {item.content}

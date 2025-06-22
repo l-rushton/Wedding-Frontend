@@ -8,7 +8,7 @@ const MenuPage = () => {
     const theme = useTheme();
     return (
         <PageFade>
-            <Box sx={{ py: 4, alignContent: 'left' }}>
+            <Box sx={{ py: 4, px: 4, alignContent: 'left' }}>
                 <Typography variant="body1" component="h5" gutterBottom align="center" 
                     sx={{
                         fontFamily: 'var(--font-cinzel)',
